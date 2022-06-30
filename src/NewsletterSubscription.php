@@ -5,17 +5,18 @@ namespace Riverskies\LaravelNewsletterSubscription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class NewsletterSubscription extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, Notifiable;
 
     protected $fillable = ['email'];
 
     /**
      * NewsletterSubscription constructor.
      *
-     * @param  array  $attributes
+     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
