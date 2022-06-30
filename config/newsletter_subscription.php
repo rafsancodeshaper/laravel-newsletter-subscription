@@ -56,5 +56,5 @@ return [
     |
     */
 
-    'session_message_key' => 'flash'
+    'session_message_key' => 'message'
 ];

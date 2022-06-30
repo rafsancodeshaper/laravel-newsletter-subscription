@@ -35,9 +35,7 @@ class NewsletterSubscriptionController extends Controller
             return redirect()->back()
                 ->with([
                     config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe'),
-                    'data'                                                => [
-                        'email' => $validated['email']
-                    ]
+                    'data'                                                => ['email' => $validated['email']]
                 ]);
         }
 
@@ -60,9 +58,7 @@ class NewsletterSubscriptionController extends Controller
             return redirect()->back()
                 ->with([
                     config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe'),
-                    'data'                                                => [
-                        'email' => $subscription->email
-                    ]
+                    'data'                                                => ['email' => $subscription->email]
                 ]);
         }
 
