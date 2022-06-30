@@ -34,13 +34,13 @@ class NewsletterSubscriptionController extends Controller
         if (!$request->expectsJson()) {
             return redirect()->back()
                 ->with([
-                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe'),
+                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe', ['email' => $validated['email']]),
                     'data'                                                => ['email' => $validated['email']]
                 ]);
         }
 
         return $this->responseWithSuccess(
-            trans('riverskies::newsletter_subscription.subscribe'),
+            trans('riverskies::newsletter_subscription.subscribe', ['email' => $validated['email']]),
             ['email' => $validated['email']]
         );
     }
@@ -57,13 +57,13 @@ class NewsletterSubscriptionController extends Controller
         if (!$request->expectsJson()) {
             return redirect()->back()
                 ->with([
-                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe'),
+                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
                     'data'                                                => ['email' => $subscription->email]
                 ]);
         }
 
         return $this->responseWithSuccess(
-            trans('riverskies::newsletter_subscription.unsubscribe'),
+            trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
             ['email' => $subscription->email]
         );
     }
