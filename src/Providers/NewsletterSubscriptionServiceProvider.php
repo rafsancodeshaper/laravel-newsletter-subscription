@@ -15,25 +15,25 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/newsletter_subscription.php', 'newsletter_subscription'
+            __DIR__.'/../../config/newsletter_subscription.php', 'newsletter_subscription'
         );
 
         $this->publishes([
-            __DIR__ . '/../../config/newsletter_subscription.php' => config_path('newsletter_subscription.php'),
+            __DIR__.'/../../config/newsletter_subscription.php' => config_path('newsletter_subscription.php'),
         ], 'newsletter-subscription-config');
 
         $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views/vendor/riverskies'),
+            __DIR__.'/../../resources/views' => resource_path('views/vendor/riverskies'),
         ], 'newsletter-subscription-views');
 
         $this->publishes([
-            __DIR__ . '/../../resources/lang' => resource_path('lang/vendor/riverskies'),
+            __DIR__.'/../../resources/lang' => resource_path('lang/vendor/riverskies'),
         ], 'newsletter-subscription-translations');
 
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'riverskies');
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang/', 'riverskies');
+        $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views/', 'riverskies');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang/', 'riverskies');
     }
 
     /**

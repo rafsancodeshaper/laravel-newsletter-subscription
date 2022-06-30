@@ -5,7 +5,6 @@ namespace Riverskies\LaravelNewsletterSubscription\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 
 class NewsletterSubscriptionConfirmation extends Mailable
@@ -20,7 +19,7 @@ class NewsletterSubscriptionConfirmation extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param NewsletterSubscription $subscription
+     * @param  NewsletterSubscription  $subscription
      */
     public function __construct(NewsletterSubscription $subscription)
     {

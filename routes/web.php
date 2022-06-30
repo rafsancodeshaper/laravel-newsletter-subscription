@@ -10,10 +10,10 @@ Route::group(['middleware' => 'web'], function () {
 Route::group(
     [
         'prefix'     => 'api',
-        'middleware' => 'api'
+        'middleware' => 'api',
     ], function () {
-    Route::post(config('newsletter_subscription.subscribe_url'),
+        Route::post(config('newsletter_subscription.subscribe_url'),
         'Riverskies\LaravelNewsletterSubscription\Http\Controllers\NewsletterSubscriptionController@store');
-    Route::get(config('newsletter_subscription.unsubscribe_url'),
+        Route::get(config('newsletter_subscription.unsubscribe_url'),
         'Riverskies\LaravelNewsletterSubscription\Http\Controllers\NewsletterSubscriptionController@destroy');
-});
+    });

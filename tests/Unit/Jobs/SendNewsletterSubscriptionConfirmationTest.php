@@ -21,7 +21,7 @@ class SendNewsletterSubscriptionConfirmationTest extends TestCase
 
         SendNewsletterSubscriptionConfirmation::dispatch($subscription);
 
-        Mail::assertSent(NewsletterSubscriptionConfirmation::class, function($mail) {
+        Mail::assertSent(NewsletterSubscriptionConfirmation::class, function ($mail) {
             return $mail->hasTo('john@example.com');
         });
     }

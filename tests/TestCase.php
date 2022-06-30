@@ -5,12 +5,12 @@ namespace Tests;
 use Dotenv\Dotenv;
 use Illuminate\Foundation\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 use Riverskies\LaravelNewsletterSubscription\Providers\NewsletterSubscriptionServiceProvider;
 
 class TestCase extends OrchestraTestCase
 {
     private $config;
+
     private $language;
 
     /**
@@ -26,8 +26,8 @@ class TestCase extends OrchestraTestCase
 
         $this->config = config('newsletter_subscription');
 
-        TestResponse::macro('assertRedirectedBack', function($referer = null) {
-            if (!$referer) {
+        TestResponse::macro('assertRedirectedBack', function ($referer = null) {
+            if (! $referer) {
                 $referer = app('request')->header('referer') ?: '/';
             }
             $this->assertRedirect($referer);
@@ -35,7 +35,7 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
@@ -75,6 +75,7 @@ class TestCase extends OrchestraTestCase
     public function config($key)
     {
         $this->assertArrayHasKey($key, $this->config);
+
         return $this->config[$key];
     }
 
@@ -82,7 +83,7 @@ class TestCase extends OrchestraTestCase
      * Language accessor.
      *
      * @param $key
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     public function language($key, $data = [])

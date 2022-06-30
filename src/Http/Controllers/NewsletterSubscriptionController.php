@@ -10,13 +10,13 @@ use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 class NewsletterSubscriptionController extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'email' => ['required', 'email']
+            'email' => ['required', 'email'],
         ]);
 
         $existingSubscription = NewsletterSubscription::withTrashed()->whereEmail($validated['email'])->first();
@@ -31,11 +31,11 @@ class NewsletterSubscriptionController extends Controller
             SendNewsletterSubscriptionConfirmation::dispatch($subscription);
         }
 
-        if (!$request->expectsJson()) {
+        if (! $request->expectsJson()) {
             return redirect()->back()
                 ->with([
                     config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe', ['email' => $validated['email']]),
-                    'data'                                                => ['email' => $validated['email']]
+                    'data' => ['email' => $validated['email']],
                 ]);
         }
 
@@ -54,11 +54,11 @@ class NewsletterSubscriptionController extends Controller
         $subscription = app('subscription-code-generator')->decode($hash);
         $subscription->delete();
 
-        if (!$request->expectsJson()) {
+        if (! $request->expectsJson()) {
             return redirect()->back()
                 ->with([
                     config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
-                    'data'                                                => ['email' => $subscription->email]
+                    'data' => ['email' => $subscription->email],
                 ]);
         }
 
@@ -71,9 +71,9 @@ class NewsletterSubscriptionController extends Controller
     protected function responseWithSuccess($message = '', $data = [], $code = 200)
     {
         return response()->json([
-            'success'                                             => true,
+            'success' => true,
             config('newsletter_subscription.session_message_key') => $message,
-            'data'                                                => $data
+            'data' => $data,
         ], $code);
     }
 }

@@ -56,5 +56,5 @@ return [
     |
     */
 
-    'session_message_key' => 'message'
+    'session_message_key' => 'message',
 ];

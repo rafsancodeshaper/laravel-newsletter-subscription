@@ -75,7 +75,7 @@ class SubscribeToNewsletterTest extends TestCase
 
         $subscription = NewsletterSubscription::first();
 
-        Queue::assertPushed(SendNewsletterSubscriptionConfirmation::class, function($job) use ($subscription) {
+        Queue::assertPushed(SendNewsletterSubscriptionConfirmation::class, function ($job) use ($subscription) {
             return $job->subscription->is($subscription);
         });
     }

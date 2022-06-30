@@ -20,7 +20,7 @@ class HashIdsSubscriptionCodeGenerator
     }
 
     /**
-     * @param NewsletterSubscription $subscription
+     * @param  NewsletterSubscription  $subscription
      * @return string
      */
     public function encodeFor(NewsletterSubscription $subscription)
@@ -35,6 +35,7 @@ class HashIdsSubscriptionCodeGenerator
     public function decode($hash)
     {
         $id = Arr::first($this->hashIds->decode($hash));
+
         return NewsletterSubscription::find($id);
     }
 }
