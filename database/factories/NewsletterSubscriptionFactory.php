@@ -1,10 +1,15 @@
 <?php
 
-use Faker\Generator as Faker;
-use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
+namespace Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 
-$factory->define(NewsletterSubscription::class, function (Faker $faker) {
-    return [
-        'email' => $faker->email,
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class NewsletterSubscriptionFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'email' => $this->faker->email,
+        ];
+    }
+}

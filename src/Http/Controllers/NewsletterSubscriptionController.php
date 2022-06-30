@@ -11,12 +11,15 @@ class NewsletterSubscriptionController extends Controller
 {
     /**
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        $data = $request->validate(['email'=>'required|email']);
-        $existingSubscription = NewsletterSubscription::withTrashed()->whereEmail($data['email'])->first();
+        $validated = $request->validate([
+            'email' => ['required', 'email']
+        ]);
+
+        $existingSubscription = NewsletterSubscription::withTrashed()->whereEmail($validated['email'])->first();
 
         if ($existingSubscription) {
             if ($existingSubscription->trashed()) {
@@ -24,24 +27,57 @@ class NewsletterSubscriptionController extends Controller
                 SendNewsletterSubscriptionConfirmation::dispatch($existingSubscription);
             }
         } else {
-            $subscription = NewsletterSubscription::create(['email'=>$data['email']]);
+            $subscription = NewsletterSubscription::create(['email' => $validated['email']]);
             SendNewsletterSubscriptionConfirmation::dispatch($subscription);
         }
 
-        return redirect()->back()
-            ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.subscribe', ['email' => $data['email']]));
+        if (!$request->expectsJson()) {
+            return redirect()->back()
+                ->with([
+                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe'),
+                    'data'                                                => [
+                        'email' => $validated['email']
+                    ]
+                ]);
+        }
+
+        return $this->responseWithSuccess(
+            trans('riverskies::newsletter_subscription.subscribe'),
+            ['email' => $validated['email']]
+        );
     }
 
     /**
      * @param $hash
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function destroy($hash)
+    public function destroy(Request $request, $hash)
     {
         $subscription = app('subscription-code-generator')->decode($hash);
         $subscription->delete();
 
-        return redirect()->back()
-            ->with(config('newsletter_subscription.session_message_key'), trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]));
+        if (!$request->expectsJson()) {
+            return redirect()->back()
+                ->with([
+                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe'),
+                    'data'                                                => [
+                        'email' => $subscription->email
+                    ]
+                ]);
+        }
+
+        return $this->responseWithSuccess(
+            trans('riverskies::newsletter_subscription.unsubscribe'),
+            ['email' => $subscription->email]
+        );
+    }
+
+    protected function responseWithSuccess($message = '', $data = [], $code = 200)
+    {
+        return response()->json([
+            'success'                                             => true,
+            config('newsletter_subscription.session_message_key') => $message,
+            'data'                                                => $data
+        ], $code);
     }
 }

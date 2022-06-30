@@ -14,9 +14,6 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->make('Illuminate\Database\Eloquent\Factory')
-            ->load(__DIR__ . '/../../database/factories');
-
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/newsletter_subscription.php', 'newsletter_subscription'
         );
@@ -30,13 +27,14 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
         ], 'newsletter-subscription-views');
 
         $this->publishes([
-            __DIR__.'/../../resources/lang' => resource_path('lang/vendor/riverskies'),
+            __DIR__ . '/../../resources/lang' => resource_path('lang/vendor/riverskies'),
         ], 'newsletter-subscription-translations');
 
-        $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
-        $this->loadViewsFrom(__DIR__.'/../../resources/views/', 'riverskies');
-        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang/', 'riverskies');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'riverskies');
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang/', 'riverskies');
     }
 
     /**
@@ -46,7 +44,7 @@ class NewsletterSubscriptionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('subscription-code-generator', function() {
+        $this->app->singleton('subscription-code-generator', function () {
             return new HashIdsSubscriptionCodeGenerator(config('app.key'));
         });
     }

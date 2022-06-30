@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'subscribe_url' => '/subscribe',
+    'subscribe_url' => '/newsletter-subscribe',
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'unsubscribe_url' => '/unsubscribe/{hash}',
+    'unsubscribe_url' => '/newsletter-unsubscribe/{hash}',
 
     /*
     |--------------------------------------------------------------------------
