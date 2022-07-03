@@ -10,7 +10,7 @@ use Riverskies\LaravelNewsletterSubscription\NewsletterSubscription;
 class NewsletterSubscriptionController extends Controller
 {
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -31,7 +31,7 @@ class NewsletterSubscriptionController extends Controller
             SendNewsletterSubscriptionConfirmation::dispatch($subscription);
         }
 
-        if (! $request->expectsJson()) {
+        if (!$request->expectsJson()) {
             return redirect()->back()
                 ->with([
                     config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.subscribe', ['email' => $validated['email']]),
@@ -52,19 +52,32 @@ class NewsletterSubscriptionController extends Controller
     public function destroy(Request $request, $hash)
     {
         $subscription = app('subscription-code-generator')->decode($hash);
-        $subscription->delete();
+        if ($subscription) {
+            $subscription->delete();
 
-        if (! $request->expectsJson()) {
+            if (!$request->expectsJson()) {
+                return redirect()->back()
+                    ->with([
+                        config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
+                        'data' => ['email' => $subscription->email],
+                    ]);
+            }
+
+            return $this->responseWithSuccess(
+                trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
+                ['email' => $subscription->email]
+            );
+        }
+
+        if (!$request->expectsJson()) {
             return redirect()->back()
                 ->with([
-                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
-                    'data' => ['email' => $subscription->email],
+                    config('newsletter_subscription.session_message_key') => trans('riverskies::newsletter_subscription.already_unsubscribed'),
                 ]);
         }
 
-        return $this->responseWithSuccess(
-            trans('riverskies::newsletter_subscription.unsubscribe', ['email' => $subscription->email]),
-            ['email' => $subscription->email]
+        return $this->responseWithError(
+            trans('riverskies::newsletter_subscription.already_unsubscribed'),
         );
     }
 
@@ -74,6 +87,15 @@ class NewsletterSubscriptionController extends Controller
             'success' => true,
             config('newsletter_subscription.session_message_key') => $message,
             'data' => $data,
+        ], $code);
+    }
+
+    protected function responseWithError($message = '', $data = [], $code = 400)
+    {
+        return response()->json([
+            'error' => true,
+            'message' => $message,
+            'data' => $data
         ], $code);
     }
 }
