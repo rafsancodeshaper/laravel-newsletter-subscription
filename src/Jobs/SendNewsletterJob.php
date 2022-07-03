@@ -2,7 +2,6 @@
 
 namespace Riverskies\LaravelNewsletterSubscription\Jobs;
 
-use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,7 +12,7 @@ use Riverskies\LaravelNewsletterSubscription\Notifications\SendNewsletterNotific
 
 class SendNewsletterJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 3;
 

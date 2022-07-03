@@ -20,7 +20,9 @@
   },
   "autoload": {
     "psr-4": {
-      "Riverskies\\LaravelNewsletterSubscription\\": "src/"
+      "Riverskies\\LaravelNewsletterSubscription\\": "src/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
     }
   },
   "autoload-dev": {

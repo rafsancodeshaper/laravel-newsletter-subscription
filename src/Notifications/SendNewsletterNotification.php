@@ -11,6 +11,8 @@ class SendNewsletterNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $tries = 3;
+
     public $subscriber;
     public string $subject;
     public string $greeting;
