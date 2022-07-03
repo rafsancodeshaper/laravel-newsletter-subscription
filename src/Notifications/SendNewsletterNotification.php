@@ -54,7 +54,7 @@ class SendNewsletterNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject($this->subject)
             ->greeting($this->greeting)
-            ->line($this->body)
+            ->markdown($this->body)
             ->action('Unsubscribe', url($this->subscriber->unsubscribeUrl));
     }
 }
