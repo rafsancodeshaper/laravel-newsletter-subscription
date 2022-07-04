@@ -40,7 +40,7 @@ class SendNewsletterNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -54,7 +54,7 @@ class SendNewsletterNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject($this->subject)
             ->greeting($this->greeting)
-            ->markdown($this->body)
+            ->markdown('emails.newsletter', ['body' => $this->body])
             ->action('Unsubscribe', url($this->subscriber->unsubscribeUrl));
     }
 }
